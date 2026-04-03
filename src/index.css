@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Space Grotesk", "Trebuchet MS", sans-serif;
+  --font-mono: "JetBrains Mono", "Consolas", monospace;
+}
+
+:root {
+  --bg-primary: #f6f7fb;
+  --bg-surface: rgba(255, 255, 255, 0.68);
+  --bg-surface-strong: rgba(255, 255, 255, 0.84);
+  --text-primary: #12263a;
+  --text-muted: #5f7488;
+  --accent: #0ea5a4;
+  --accent-2: #2f6df3;
+  --danger: #eb5757;
+  --ok: #27ae60;
+  --glass-border: rgba(255, 255, 255, 0.38);
+  --shadow-soft: 0 10px 40px rgba(24, 42, 68, 0.12);
+}
+
+.dark {
+  --bg-primary: #0f1728;
+  --bg-surface: rgba(16, 25, 44, 0.56);
+  --bg-surface-strong: rgba(16, 25, 44, 0.76);
+  --text-primary: #edf3fc;
+  --text-muted: #9eb1c8;
+  --accent: #2dd4bf;
+  --accent-2: #60a5fa;
+  --danger: #f87171;
+  --ok: #4ade80;
+  --glass-border: rgba(148, 163, 184, 0.2);
+  --shadow-soft: 0 12px 40px rgba(5, 8, 19, 0.55);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-display);
+  background:
+    radial-gradient(1200px 800px at 20% -20%, rgba(33, 150, 243, 0.2), transparent),
+    radial-gradient(1000px 700px at 110% 10%, rgba(14, 165, 164, 0.22), transparent),
+    var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 250ms ease, color 250ms ease;
+}
+
+.glass-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(14px);
+}
+
+.glass-card-strong {
+  background: var(--bg-surface-strong);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  margin-left: 1px;
+  transform: translateY(2px);
+  background: var(--accent);
+  animation: cursor-blink 1s steps(1) infinite;
+}
+
+@keyframes cursor-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}

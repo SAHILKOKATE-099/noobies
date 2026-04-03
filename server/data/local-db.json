@@ -1,0 +1,43 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "fixeduser",
+      "email": "fixeduser@example.com",
+      "password": "$2b$10$X1EJWj4vWUGsAhimRYyy8uaEJEtaf2GBR9IXO9oV9TrJC/srR8dmi",
+      "created_at": "2026-04-01T17:18:52.349Z"
+    },
+    {
+      "id": 2,
+      "username": "fixeduser2",
+      "email": "fixeduser2@example.com",
+      "password": "$2b$10$9LRBwyMyOGDxZxMwpO/00.ouzEdaGQ5ubs167lK3g.UsRiZVltzGK",
+      "created_at": "2026-04-01T17:20:03.051Z"
+    },
+    {
+      "id": 3,
+      "username": "sahil",
+      "email": "harshadkokate35@gmail.com",
+      "password": "$2b$10$9hJWk.MFNQ/LSYqBHc150.EEoZQWzjs7F.g3EiowFSNSPI/CLRbny",
+      "created_at": "2026-04-01T17:24:22.015Z"
+    }
+  ],
+  "results": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "wpm": 77,
+      "accuracy": 95.5,
+      "time_taken": 60,
+      "created_at": "2026-04-01T17:18:52.428Z"
+    },
+    {
+      "id": 2,
+      "user_id": 3,
+      "wpm": 16,
+      "accuracy": 5.63,
+      "time_taken": 0,
+      "created_at": "2026-04-01T17:25:42.098Z"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+ER Diagram (Text-Based)
+
+1) users
+- id (PK)
+- username (unique)
+- email (unique)
+- password
+- created_at
+
+2) results
+- id (PK)
+- user_id (FK -> users.id)
+- wpm
+- accuracy
+- time_taken
+- created_at
+
+Relationship:
+- users (1) ---- (M) results
+- One user can submit multiple typing results.
+- Every result belongs to exactly one user.
+
+Normalization Notes:
+- User identity data is stored once in users.
+- Typing attempts are stored independently in results.
+- No repeated user fields in results beyond foreign key user_id.
