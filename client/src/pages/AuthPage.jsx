@@ -9,7 +9,7 @@ export default function AuthPage() {
   const [isSignup, setIsSignup] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [showApiConfig, setShowApiConfig] = useState(false)
+  const [showApiConfig, setShowApiConfig] = useState(true)
   const [apiBaseInput, setApiBaseInput] = useState(getApiBase())
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -95,7 +95,6 @@ export default function AuthPage() {
       return
     }
     setError('')
-    setShowApiConfig(false)
   }
 
   return (
