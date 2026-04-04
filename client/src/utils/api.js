@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 const API_BASE_KEY = 'typing-api-base'
+const DEPLOYED_API_FALLBACK = 'https://exs-d78a7gpr0fns73dsq9sg.onrender.com/api'
 
 const ensureApiPath = (value) => {
   const trimmed = String(value || '').trim().replace(/\/+$/, '')
@@ -15,11 +16,16 @@ export const getApiBase = () => {
   const storedBase = ensureApiPath(localStorage.getItem(API_BASE_KEY))
   if (storedBase) return storedBase
 
+  if (window.location.hostname.endsWith('github.io')) {
+    return DEPLOYED_API_FALLBACK
+  }
+
   return 'http://localhost:5000/api'
 }
 
 export const api = axios.create({
   baseURL: getApiBase(),
+  timeout: 15000,
 })
 
 export const setApiBase = (value) => {

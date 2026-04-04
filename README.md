@@ -166,3 +166,11 @@ If your GitHub website link is not opening, use this setup:
 
 Then open:
 - `https://<your-username>.github.io/<your-repo>/`
+
+### Owner-only Backend URL Panel
+
+By default, backend URL settings are hidden on auth page.
+Only owner mode can see it:
+
+- Open: `https://<your-username>.github.io/<your-repo>/?owner=1#/auth`
+- Then set API URL (for local PC backend use `http://localhost:5000/api`)

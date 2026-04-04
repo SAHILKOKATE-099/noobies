@@ -9,7 +9,8 @@ export default function AuthPage() {
   const [isSignup, setIsSignup] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [showApiConfig, setShowApiConfig] = useState(true)
+  const ownerMode = window.location.href.includes('owner=1')
+  const [showApiConfig, setShowApiConfig] = useState(ownerMode)
   const [apiBaseInput, setApiBaseInput] = useState(getApiBase())
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -37,9 +38,13 @@ export default function AuthPage() {
     const errors = requestError.response?.data?.errors
     if (messageFromResponse) return messageFromResponse
     if (Array.isArray(errors) && errors.length > 0) return errors[0]?.msg || 'Validation failed'
+    if (requestError.code === 'ECONNABORTED') {
+      return 'Request timed out. Backend might be sleeping; wait 30-60s and try again.'
+    }
     if (requestError.code === 'ERR_NETWORK') {
-      setShowApiConfig(true)
-      return 'Cannot reach server. Start backend or set VITE_API_URL for deployed frontend.'
+      return ownerMode
+        ? 'Cannot reach server. Check backend API URL below.'
+        : 'Cannot reach backend. Please try again in a few seconds.'
     }
     return 'Authentication failed'
   }
@@ -190,7 +195,7 @@ export default function AuthPage() {
       {error ? <p className="mt-2 text-sm text-[var(--danger)]">{error}</p> : null}
       {showApiConfig ? (
         <div className="mt-4 space-y-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3">
-          <p className="text-xs text-[var(--text-muted)]">Backend API URL (example: https://your-api-domain.com/api)</p>
+          <p className="text-xs text-[var(--text-muted)]">Owner backend API URL (example: https://your-api-domain.com/api)</p>
           <input
             type="text"
             placeholder="https://your-api-domain.com/api"
