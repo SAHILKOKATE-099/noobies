@@ -129,3 +129,20 @@ firebase deploy --only hosting
 ## Notes for DBMS Viva
 
 - Input validation and structured error responses are implemented in backend routes.
+
+## GitHub Pages (Frontend Link)
+
+If your GitHub website link is not opening, use this setup:
+
+1. Push this repo to GitHub on `main`.
+2. In GitHub repo settings:
+   - Go to `Settings -> Pages`
+   - Set `Source` to `GitHub Actions`
+3. Add repository secret:
+   - `Settings -> Secrets and variables -> Actions -> New repository secret`
+   - Name: `VITE_API_URL`
+   - Value: your deployed backend API URL (example: `https://your-api.run.app/api`)
+4. Wait for workflow `Deploy Client to GitHub Pages` to complete.
+
+Then open:
+- `https://<your-username>.github.io/<your-repo>/`
