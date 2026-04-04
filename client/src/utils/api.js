@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API_BASE_KEY = 'typing-api-base'
-const DEPLOYED_API_FALLBACK = 'https://exs-d78a7gpr0fns73dsq9sg.onrender.com/api'
+const DEPLOYED_API_FALLBACK = 'https://exs-d78icbeuk2gs73dpblog.onrender.com/api'
 
 const ensureApiPath = (value) => {
   const trimmed = String(value || '').trim().replace(/\/+$/, '')
