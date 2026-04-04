@@ -1,7 +1,11 @@
 import axios from 'axios'
 
 const API_BASE_KEY = 'typing-api-base'
-const DEPLOYED_API_FALLBACK = 'https://exs-d78icbeuk2gs73dpblog.onrender.com/api'
+const DEPLOYED_API_FALLBACK = 'https://noobies-api.onrender.com/api'
+const KNOWN_BAD_API_BASES = new Set([
+  'https://exs-d78icbeuk2gs73dpblog.onrender.com/api',
+  'https://noobies-api-jrus.onrender.com/api',
+])
 
 const ensureApiPath = (value) => {
   const trimmed = String(value || '').trim().replace(/\/+$/, '')
@@ -14,7 +18,10 @@ export const getApiBase = () => {
   if (envBase) return envBase
 
   const storedBase = ensureApiPath(localStorage.getItem(API_BASE_KEY))
-  if (storedBase) return storedBase
+  if (storedBase && !KNOWN_BAD_API_BASES.has(storedBase)) return storedBase
+  if (storedBase && KNOWN_BAD_API_BASES.has(storedBase)) {
+    localStorage.removeItem(API_BASE_KEY)
+  }
 
   if (window.location.hostname.endsWith('github.io')) {
     return DEPLOYED_API_FALLBACK
