@@ -126,6 +126,26 @@ npm run build
 firebase deploy --only hosting
 ```
 
+## Backend Deploy (Render - easiest)
+
+This repo now includes `render.yaml` for one-click backend deployment.
+
+1. Go to Render and create a new `Blueprint` service from this GitHub repo.
+2. Render will detect `render.yaml` and create service `noobies-api`.
+3. In Render, set environment values:
+   - `MONGO_URI` (MongoDB Atlas URI)
+   - `JWT_SECRET` (strong random secret)
+   - `ADMIN_EMAIL`
+   - `ADMIN_PASSWORD`
+   - Optional: `ADMIN_USERNAME`
+4. Deploy and copy your backend URL:
+   - Example: `https://noobies-api.onrender.com`
+   - API base becomes: `https://noobies-api.onrender.com/api`
+5. In your frontend on GitHub Pages:
+   - Open Login page
+   - If needed, set Backend API URL to your Render URL with `/api`
+   - Example: `https://noobies-api.onrender.com/api`
+
 ## Notes for DBMS Viva
 
 - Input validation and structured error responses are implemented in backend routes.
