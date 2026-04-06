@@ -23,11 +23,14 @@ export const getApiBase = () => {
     localStorage.removeItem(API_BASE_KEY)
   }
 
-  if (window.location.hostname.endsWith('github.io')) {
-    return DEPLOYED_API_FALLBACK
+  // If running locally, hit the local Express server
+  const hostname = window.location.hostname
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'http://localhost:5000/api'
   }
 
-  return 'http://localhost:5000/api'
+  // Any deployed environment (Vercel, GitHub Pages, custom domain) → use Render backend
+  return DEPLOYED_API_FALLBACK
 }
 
 export const api = axios.create({
