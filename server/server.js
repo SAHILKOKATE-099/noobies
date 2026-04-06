@@ -12,7 +12,29 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 5000
 
-app.use(cors())
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:4173',
+  ...(process.env.CLIENT_ORIGIN ? process.env.CLIENT_ORIGIN.split(',').map((o) => o.trim()) : []),
+]
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (curl, Postman, server-to-server)
+      if (!origin) return callback(null, true)
+      if (
+        allowedOrigins.some((allowed) => origin === allowed) ||
+        origin.endsWith('.vercel.app') ||
+        origin.endsWith('.onrender.com')
+      ) {
+        return callback(null, true)
+      }
+      return callback(new Error(`CORS: origin ${origin} not allowed`))
+    },
+    credentials: true,
+  }),
+)
 app.use(express.json())
 
 app.get('/', (_req, res) => {
