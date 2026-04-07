@@ -9,9 +9,10 @@ A full-stack typing practice web app built with:
 
 ```text
 typing website/
-+-- client/      # React frontend
-+-- backend/     # Express API + MongoDB integration
-+-- database/    # SQL schema, sample data, ER explanation
++-- project/
+|   +-- frontend/   # React frontend
+|   +-- backend/    # Express API + MongoDB integration
++-- database/       # SQL schema, sample data, ER explanation
 ```
 
 ## Features
@@ -40,12 +41,12 @@ typing website/
 ### 1) Database
 
 1. Start MongoDB locally.
-2. Ensure `backend/.env` has valid `MONGO_URI`.
+2. Ensure `project/backend/.env` has valid `MONGO_URI`.
 
 ### 2) Backend (server)
 
 ```bash
-cd backend
+cd project/backend
 npm install
 cp .env.example .env
 # update DB credentials + JWT secret
@@ -54,12 +55,11 @@ node server.js
 
 API runs at `http://localhost:5000`.
 
-### 3) Frontend (client)
+### 3) Frontend
 
 ```bash
-cd client
+cd project/frontend
 npm install
-cp .env.example .env
 npm run dev
 ```
 
@@ -77,7 +77,7 @@ Frontend runs at `http://localhost:5173`.
 
 ## Admin Seed Account
 
-- Email and password are controlled from `backend/.env`:
+- Email and password are controlled from `project/backend/.env`:
   - `ADMIN_EMAIL`
   - `ADMIN_PASSWORD`
 
@@ -90,7 +90,7 @@ Frontend runs at `http://localhost:5173`.
 gcloud auth login
 gcloud config set project YOUR_PROJECT_ID
 ```
-2. From `backend/` deploy:
+2. From `project/backend/` deploy:
 ```bash
 gcloud run deploy noobies-api \
   --source . \
@@ -111,7 +111,7 @@ gcloud run deploy noobies-api \
 npm install -g firebase-tools
 firebase login
 ```
-2. In `client/`:
+2. In `project/frontend/`:
 ```bash
 cp .firebaserc.example .firebaserc
 cp .env.production.example .env.production
@@ -162,7 +162,7 @@ If your GitHub website link is not opening, use this setup:
    - `Settings -> Secrets and variables -> Actions -> New repository secret`
    - Name: `VITE_API_URL`
    - Value: your deployed backend API URL (example: `https://your-api.run.app/api`)
-4. Wait for workflow `Deploy Client to GitHub Pages` to complete.
+4. Wait for workflow `Deploy Frontend to GitHub Pages` to complete.
 
 Then open:
 - `https://<your-username>.github.io/<your-repo>/`

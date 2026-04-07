@@ -2,7 +2,7 @@ services:
   - type: web
     name: noobies-api
     runtime: docker
-    rootDir: backend
+    rootDir: project/backend
     plan: free
     autoDeploy: true
     healthCheckPath: /
