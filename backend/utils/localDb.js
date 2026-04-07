@@ -29,6 +29,13 @@ export const localDb = {
     return db.users.find((user) => user.email.toLowerCase() === email.toLowerCase()) || null
   },
 
+  async findUserByUsername(username) {
+    const db = await readLocalDb()
+    return (
+      db.users.find((user) => user.username.toLowerCase() === String(username).toLowerCase()) || null
+    )
+  },
+
   async createUser({ username, email, password }) {
     const db = await readLocalDb()
     const nextId = db.users.length ? Math.max(...db.users.map((user) => user.id)) + 1 : 1

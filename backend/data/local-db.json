@@ -39,5 +39,12 @@
       "time_taken": 0,
       "created_at": "2026-04-01T17:25:42.098Z"
     }
+  ],
+  "race_points": [
+    {
+      "name": "Volt Rider",
+      "points": 1,
+      "updated_at": "2026-04-07T03:29:59.101Z"
+    }
   ]
 }

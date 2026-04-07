@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { validationResult } from 'express-validator'
 import { User } from '../models/User.js'
+import { localDb } from '../utils/localDb.js'
 
 const tokenForUser = (user) =>
   jwt.sign(
@@ -52,6 +53,17 @@ export const signup = async (req, res) => {
       password: hashedPassword,
       isAdmin: false,
     })
+
+    // Keep local JSON user store in sync for local-db workflows.
+    const localByEmail = await localDb.findUserByEmail(email)
+    const localByUsername = await localDb.findUserByUsername(username)
+    if (!localByEmail && !localByUsername) {
+      await localDb.createUser({
+        username,
+        email,
+        password: user.password,
+      })
+    }
 
     const payload = cleanUser(user)
     const token = tokenForUser(payload)

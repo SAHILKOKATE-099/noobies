@@ -10,7 +10,7 @@ A full-stack typing practice web app built with:
 ```text
 typing website/
 +-- client/      # React frontend
-+-- server/      # Express API + MongoDB integration
++-- backend/     # Express API + MongoDB integration
 +-- database/    # SQL schema, sample data, ER explanation
 ```
 
@@ -40,12 +40,12 @@ typing website/
 ### 1) Database
 
 1. Start MongoDB locally.
-2. Ensure `server/.env` has valid `MONGO_URI`.
+2. Ensure `backend/.env` has valid `MONGO_URI`.
 
 ### 2) Backend (server)
 
 ```bash
-cd server
+cd backend
 npm install
 cp .env.example .env
 # update DB credentials + JWT secret
@@ -77,7 +77,7 @@ Frontend runs at `http://localhost:5173`.
 
 ## Admin Seed Account
 
-- Email and password are controlled from `server/.env`:
+- Email and password are controlled from `backend/.env`:
   - `ADMIN_EMAIL`
   - `ADMIN_PASSWORD`
 
@@ -90,7 +90,7 @@ Frontend runs at `http://localhost:5173`.
 gcloud auth login
 gcloud config set project YOUR_PROJECT_ID
 ```
-2. From `server/` deploy:
+2. From `backend/` deploy:
 ```bash
 gcloud run deploy noobies-api \
   --source . \
