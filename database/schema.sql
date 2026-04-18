@@ -37,10 +37,10 @@ CREATE INDEX idx_results_created_at ON results(created_at DESC);
 
 -- Sample users (password hash placeholders)
 INSERT INTO users (username, email, password, is_admin) VALUES
-('ava', 'ava@example.com', '$2a$10$dummyhash1', 0),
-('noah', 'noah@example.com', '$2a$10$dummyhash2', 0),
-('mia', 'mia@example.com', '$2a$10$dummyhash3', 0),
-('admin', 'admin@typeflow.local', '$2b$10$bEvED5calRoxfY9lCoWct.6deMm396nYC/8Ka9oJj3rORrp7gRLVu', 1);
+('ava', 'ava@example.com', 'password_hash_placeholder_1', 0),
+('noah', 'noah@example.com', 'password_hash_placeholder_2', 0),
+('mia', 'mia@example.com', 'password_hash_placeholder_3', 0),
+('admin', 'admin@typeflow.local', 'password_hash_placeholder_admin', 1);
 
 -- Sample results
 INSERT INTO results (user_id, wpm, accuracy, time_taken) VALUES

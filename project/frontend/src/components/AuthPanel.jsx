@@ -14,6 +14,7 @@ export default function AuthPanel({
 }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   return (
     <motion.section
@@ -45,13 +46,22 @@ export default function AuthPanel({
                 placeholder="Email"
                 className="w-full rounded-xl border border-white/30 bg-white/20 px-3 py-2 text-sm outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--accent)]"
               />
-              <input
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                placeholder="Password"
-                className="w-full rounded-xl border border-white/30 bg-white/20 px-3 py-2 text-sm outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--accent)]"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  placeholder="Password"
+                  className="w-full rounded-xl border border-white/30 bg-white/20 px-3 py-2 pr-10 text-sm outline-none placeholder:text-[var(--text-muted)] focus:border-[var(--accent)]"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                >
+                  {showPassword ? '🙈' : '👁️'}
+                </button>
+              </div>
               <div className="flex gap-2">
                 <button
                   type="button"

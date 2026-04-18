@@ -1,6 +1,8 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { validationResult } from 'express-validator'
+import crypto from 'crypto'
+import nodemailer from 'nodemailer'
 import { User } from '../models/User.js'
 import { localDb } from '../utils/localDb.js'
 
@@ -22,6 +24,34 @@ const cleanUser = (user) => ({
   email: user.email,
   isAdmin: Boolean(user.isAdmin),
 })
+
+const sendVerificationEmail = async (email, token) => {
+  const transporter = nodemailer.createTransporter({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  })
+
+  const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`
+
+  const mailOptions = {
+    from: process.env.SMTP_USER,
+    to: email,
+    subject: 'Verify your email for Typing Website',
+    html: `
+      <p>Hi,</p>
+      <p>Please verify your email by clicking the link below:</p>
+      <a href="${verificationUrl}">Verify Email</a>
+      <p>If you did not create an account, please ignore this email.</p>
+    `,
+  }
+
+  await transporter.sendMail(mailOptions)
+}
 
 export const signup = async (req, res) => {
   const errors = validationResult(req)
@@ -47,12 +77,22 @@ export const signup = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)
+    const verificationToken = crypto.randomBytes(32).toString('hex')
     const user = await User.create({
       username,
       email,
       password: hashedPassword,
+      verificationToken,
       isAdmin: false,
     })
+
+    // Send verification email
+    try {
+      await sendVerificationEmail(email, verificationToken)
+    } catch (emailError) {
+      console.error('Failed to send verification email:', emailError)
+      // Still create user, but log error
+    }
 
     // Keep local JSON user store in sync for local-db workflows.
     const localByEmail = await localDb.findUserByEmail(email)
@@ -65,9 +105,8 @@ export const signup = async (req, res) => {
       })
     }
 
-    const payload = cleanUser(user)
-    const token = tokenForUser(payload)
-    return res.status(201).json({ token, user: payload, storage: 'mongodb' })
+    // Do not return JWT token until email is verified
+    return res.status(201).json({ message: 'User created. Please check your email to verify your account.' })
   } catch (error) {
     console.error('signup error:', error)
     if (error?.code === 11000 && error?.keyPattern?.email) {
@@ -100,12 +139,44 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password' })
     }
 
+    if (!user.emailVerified) {
+      return res.status(403).json({ message: 'Please verify your email before logging in.' })
+    }
+
     const payload = cleanUser(user)
     const token = tokenForUser(payload)
     return res.json({ token, user: payload, storage: 'mongodb' })
   } catch (error) {
     console.error('login error:', error)
     return res.status(500).json({ message: 'Server error while logging in' })
+  }
+}
+
+export const verifyEmail = async (req, res) => {
+  const { token } = req.body
+
+  if (!token) {
+    return res.status(400).json({ message: 'Verification token is required' })
+  }
+
+  try {
+    const user = await User.findOne({ verificationToken: token })
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid verification token' })
+    }
+
+    if (user.emailVerified) {
+      return res.status(400).json({ message: 'Email already verified' })
+    }
+
+    user.emailVerified = true
+    user.verificationToken = undefined // Clear token
+    await user.save()
+
+    return res.json({ message: 'Email verified successfully. You can now log in.' })
+  } catch (error) {
+    console.error('verifyEmail error:', error)
+    return res.status(500).json({ message: 'Server error while verifying email' })
   }
 }
 

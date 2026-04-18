@@ -3,9 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>Noobies</title>
-    <script type="module" crossorigin src="./assets/index-vHr6o8vF.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CFPtN0OI.css">
+    <script>
+      ;(() => {
+        const isLocalHost =
+          window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+
+        if (!window.location.hash && window.location.pathname !== '/') {
+          const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/'
+          const nextHash = normalizedPath === '/' ? '#/' : `#${normalizedPath}`
+          const nextUrl = `${window.location.origin}/${nextHash}${window.location.search}`
+          window.location.replace(nextUrl)
+          return
+        }
+
+        if (isLocalHost) {
+          window.localStorage.setItem('typing-api-base', 'http://127.0.0.1:5000/api')
+        }
+      })()
+    </script>
+    <script type="module" crossorigin src="./assets/index-vHr6o8vF.js?v=20260409"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CFPtN0OI.css?v=20260409">
   </head>
   <body>
     <div id="root"></div>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 
 export default function TestArea({
@@ -11,10 +11,20 @@ export default function TestArea({
   status,
 }) {
   const inputRef = useRef(null)
+  const [hasStarted, setHasStarted] = useState(false)
+
+  // Reset local state if it restarts (status goes back to idle or progress resets)
+  useEffect(() => {
+    if (status === 'idle' && input === '') {
+      setHasStarted(false)
+    }
+  }, [status, input])
 
   useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
+    if (hasStarted) {
+      inputRef.current?.focus()
+    }
+  }, [hasStarted])
 
   const progressColor =
     status === 'finished'
@@ -42,29 +52,46 @@ export default function TestArea({
         />
       </div>
 
-      <button
-        type="button"
-        onClick={() => inputRef.current?.focus()}
-        className="relative w-full rounded-2xl border border-white/20 bg-black/10 px-4 py-5 text-left"
-      >
-        <div className="font-mono text-sm leading-8 tracking-wide sm:text-lg">
-          {charStates.map((item, index) => {
-            let className = 'text-[var(--text-muted)]'
+      <div className="relative w-full">
+        {!hasStarted && status === 'idle' && (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-2xl bg-black/60 backdrop-blur-sm">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                setHasStarted(true)
+                setTimeout(() => inputRef.current?.focus(), 0)
+              }}
+              className="rounded-full bg-[var(--accent)] px-8 py-3 text-lg font-bold text-white shadow-lg transition hover:scale-105 hover:bg-[var(--accent-2)]"
+            >
+              Start Test
+            </button>
+          </div>
+        )}
+        <button
+          type="button"
+          onClick={() => hasStarted && inputRef.current?.focus()}
+          className="relative w-full rounded-2xl border border-white/20 bg-black/10 px-4 py-5 text-left"
+        >
+          <div className="font-mono text-sm leading-8 tracking-wide sm:text-lg">
+            {charStates.map((item, index) => {
+              let className = 'text-[var(--text-muted)]'
 
-            if (item.state === 'correct') className = 'text-[var(--ok)]'
-            if (item.state === 'incorrect') className = 'bg-[var(--danger)]/20 text-[var(--danger)]'
+              if (item.state === 'correct') className = 'text-[var(--ok)]'
+              if (item.state === 'incorrect') className = 'bg-[var(--danger)]/20 text-[var(--danger)]'
 
-            return (
-              <span key={`${item.char}-${index}`} className={className}>
-                {item.char}
-                {index === currentIndex && status !== 'finished' ? (
-                  <span className="typing-cursor" aria-hidden="true" />
-                ) : null}
-              </span>
-            )
-          })}
-        </div>
-      </button>
+              return (
+                <span key={`${item.char}-${index}`} className={className}>
+                  {item.char}
+                  {index === currentIndex && status !== 'finished' ? (
+                    <span className="typing-cursor" aria-hidden="true" />
+                  ) : null}
+                </span>
+              )
+            })}
+          </div>
+        </button>
+      </div>
 
       <textarea
         ref={inputRef}
@@ -74,6 +101,7 @@ export default function TestArea({
         autoCorrect="off"
         autoCapitalize="off"
         spellCheck={false}
+        disabled={!hasStarted}
       />
 
       <p className="mt-3 text-xs text-[var(--text-muted)]">

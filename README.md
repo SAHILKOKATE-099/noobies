@@ -81,6 +81,13 @@ Frontend runs at `http://localhost:5173`.
   - `ADMIN_EMAIL`
   - `ADMIN_PASSWORD`
 
+## Security Notes
+
+- Keep server secrets only in `project/backend/.env` or your hosting provider's environment settings.
+- `JWT_SECRET` should be a long random string with at least 32 characters.
+- `CLIENT_ORIGIN` must list the exact frontend domains allowed to call your API.
+- Firebase `VITE_...` values used by the frontend are client configuration, not private server secrets. Real protection comes from Firebase Auth, Security Rules, App Check, and allowed domains.
+
 ## Deploy On Google
 
 ### Backend on Google Cloud Run
