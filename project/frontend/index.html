@@ -11,11 +11,15 @@
       ;(() => {
         const isLocalHost =
           window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        const pathSegments = window.location.pathname.split('/').filter(Boolean)
+        const isGitHubPages = window.location.hostname.endsWith('.github.io')
+        const basePath = isGitHubPages && pathSegments.length ? `/${pathSegments[0]}` : ''
+        const routeSegments = isGitHubPages ? pathSegments.slice(1) : pathSegments
+        const routePath = routeSegments.length ? `/${routeSegments.join('/')}` : '/'
 
-        if (!window.location.hash && window.location.pathname !== '/') {
-          const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/'
-          const nextHash = normalizedPath === '/' ? '#/' : `#${normalizedPath}`
-          const nextUrl = `${window.location.origin}/${nextHash}${window.location.search}`
+        if (!window.location.hash && routePath !== '/') {
+          const nextHash = routePath === '/' ? '#/' : `#${routePath}`
+          const nextUrl = `${window.location.origin}${basePath}/${nextHash}${window.location.search}`
           window.location.replace(nextUrl)
           return
         }
